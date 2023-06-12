@@ -1,0 +1,337 @@
+<!-- 页面名称：咨询情况大屏展示页
+页面目的：通过卡片以及图表展示实时咨询情况
+页面结构：
+顶部：占整体页面长度的1/5,包含4个卡片，每个卡片占用平均宽度，卡片里面包含左边为一个图标，右边分为上下两个元素，分别为标题与数字
+○ 卡片1：图标为笑脸，底色为浅绿色，
+○ 卡片2：图标为握手，底色为浅蓝色，
+○ 卡片3：图标为饼图，底色为浅黄色，
+○ 卡片4：图标为国际化，底色为浅红色，
+2. 中部：占整体页面长度的2/5，包含一个饼图，占1/2个宽度，另外一半与底部，右四分之一宽度为一个块，包含三个折线图，每个折线图有一根线，x轴为人名，y轴为0-400
+○ 饼图：标题为慢性疾病预警，包含六个标签
+■ 标签1：风湿，30%
+■ 标签1：慢性呼吸系统疾病，30%
+■ 标签1：精神、心理疾病，15%
+■ 标签1：心血管疾病，15%
+■ 标签1：营养代谢疾病，5%
+■ 标签1：恶性肿瘤，5%
+3. 底部：占整体页面长度的2/5，包含一个环形图，占1/4个宽度。一个雷达图，占1/4个宽度。另外一半为上述折线图。
+● 环形图：标题为心理健康预警，包含五个标签，分别为敌对，焦虑、敌对、敌对、躯体化。
+● 雷达图，五个角分别为，竞争压力、职场压力、家庭压力、人际压力、学习压力
+请帮我生成静态页面，不要省略代码，给出代码。图标请使用fontawesome库完成。 -->
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVpDMNwiedAP4Kq7W4gXp5MWQCo6U1MwB6aJXn2xkrD4"
+      crossorigin="anonymous"
+    />
+    <title>咨询情况大屏展示页</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .header {
+        display: flex;
+        height: 20%;
+      }
+      .card {
+        flex-grow: 1;
+        background-color: #f3f3f3;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 24px;
+        padding: 10px;
+      }
+      .icon {
+        font-size: 40px;
+        color: green;
+      }
+      .title {
+        margin-bottom: 5px;
+      }
+      .number {
+        font-size: 36px;
+        font-weight: bold;
+      }
+      .middle {
+        display: flex;
+        height: 40%;
+      }
+      .pie-chart-container {
+        flex-basis: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .line-chart-container {
+        flex-basis: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .footer {
+        display: flex;
+        height: 40%;
+      }
+      .doughnut-chart-container {
+        flex-basis: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .radar-chart-container {
+        flex-basis: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .line-charts-container {
+        flex-basis: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chart-title {
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="card">
+        <i class="fas fa-smile icon"></i>
+        <div class="right">
+          <div class="title">高兴人数</div>
+          <div class="number">300</div>
+        </div>
+      </div>
+      <div class="card">
+        <i class="fas fa-handshake icon"></i>
+        <div class="right">
+          <div class="title">合作成功次数</div>
+          <div class="number">200</div>
+        </div>
+      </div>
+      <div class="card">
+        <i class="fas fa-chart-pie icon"></i>
+        <div class="right">
+          <div class="title">慢性疾病预警</div>
+          <div class="number">-</div>
+        </div>
+      </div>
+      <div class="card">
+        <i class="fas fa-globe icon"></i>
+        <div class="right">
+          <div class="title">国际化程度</div>
+          <div class="number">80%</div>
+        </div>
+      </div>
+    </div>
+    <div class="middle">
+      <div class="pie-chart-container">
+        <div>
+          <div class="chart-title">慢性疾病预警</div>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+      <div class="line-chart-container">
+        <div>
+          <div class="chart-title">人员变化趋势</div>
+          <canvas id="lineChart1"></canvas>
+        </div>
+      </div>
+      <div class="line-chart-container">
+        <div>
+          <div class="chart-title">收入变化趋势</div>
+          <canvas id="lineChart2"></canvas>
+        </div>
+      </div>
+      <div class="line-chart-container">
+        <div>
+          <div class="chart-title">客户评价趋势</div>
+          <canvas id="lineChart3"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="doughnut-chart-container">
+        <div>
+          <div class="chart-title">心理健康预警</div>
+          <canvas id="doughnutChart"></canvas>
+        </div>
+      </div>
+      <div class="radar-chart-container">
+        <div>
+          <div class="chart-title">压力指数</div>
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+      <div class="line-charts-container">
+        <div>
+          <div class="chart-title">趋势对比</div>
+          <canvas id="lineCharts"></canvas>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Pie chart
+      const pieData = {
+        labels: [
+          "风湿",
+          "慢性呼吸系统疾病",
+          "精神、心理疾病",
+          "心血管疾病",
+          "营养代谢疾病",
+          "恶性肿瘤",
+        ],
+        datasets: [
+          {
+            data: [30, 30, 15, 15, 5, 5],
+            backgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56",
+              "#cc65fe",
+              "#ff00fd",
+              "#fc9505",
+            ],
+          },
+        ],
+      };
+      new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: pieData,
+      });
+
+      // Doughnut chart
+      const doughnutData = {
+        labels: ["敌对", "焦虑", "敌对", "敌对", "躯体化"],
+        datasets: [
+          {
+            data: [20, 20, 20, 20, 20],
+            backgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56",
+              "#cc65fe",
+              "#ff00fd",
+            ],
+          },
+        ],
+      };
+      new Chart(document.getElementById("doughnutChart"), {
+        type: "doughnut",
+        data: doughnutData,
+      });
+
+      // Radar chart
+      const radarData = {
+        labels: [
+          "竞争压力",
+          "职场压力",
+          "家庭压力",
+          "人际压力",
+          "学习压力",
+        ],
+        datasets: [
+          {
+            label: "压力指数",
+            backgroundColor: "rgba(220,220,220,0.2)",
+            borderColor: "rgba(220,220,220,1)",
+            pointBackgroundColor: "rgba(220,220,220,1)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            data: [65, 59, 90, 81, 56],
+          },
+        ],
+      };
+      new Chart(document.getElementById("radarChart"), {
+        type: "radar",
+        data: radarData,
+      });
+
+      // Line charts
+      const lineData1 = {
+        labels: ["张三", "李四", "王五"],
+        datasets: [
+          {
+            label: "人员总数",
+            borderColor: "green",
+            backgroundColor: "lightgreen",
+            fill: false,
+            data: [100, 200, 150],
+          },
+        ],
+      };
+      const lineData2 = {
+        labels: ["2020-01", "2020-02", "2020-03"],
+        datasets: [
+          {
+            label: "收入总额",
+            borderColor: "blue",
+            backgroundColor: "lightblue",
+            fill: false,
+            data: [500, 700, 600],
+          },
+        ],
+      };
+      const lineData3 = {
+        labels: ["2020-01", "2020-02", "2020-03"],
+        datasets: [
+          {
+            label: "综合评分",
+            borderColor: "orange",
+            backgroundColor: "lightcoral",
+            fill: false,
+            data: [3.5, 4, 3.8],
+          },
+        ],
+      };
+      new Chart(document.getElementById("lineChart1"), {
+        type: "line",
+        data: lineData1,
+      });
+      new Chart(document.getElementById("lineChart2"), {
+        type: "line",
+        data: lineData2,
+      });
+      new Chart(document.getElementById("lineChart3"), {
+      type: "line",
+      data: lineData3,
+      });
+  // Combined line charts
+  const lineChartsData = {
+    labels: ["2020-01", "2020-02", "2020-03"],
+    datasets: [
+      {
+        label: "收入总额",
+        borderColor: "blue",
+        backgroundColor: "lightblue",
+        fill: false,
+        data: [500, 700, 600],
+      },
+      {
+        label: "评分",
+        borderColor: "orange",
+        backgroundColor: "lightcoral",
+        fill: false,
+        data: [3.5, 4, 3.8],
+      },
+    ],
+  };
+  new Chart(document.getElementById("lineCharts"), {
+    type: "line",
+    data: lineChartsData,
+  });
+</script>
